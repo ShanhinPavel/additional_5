@@ -1,49 +1,19 @@
 module.exports = function check(str, bracketsConfig) {
-  // your solution
-   let arrayBrackets = [];
-   let lastElement;
-   let count = 0;
-   let count1 = 0;
-   
-   let newString;
+  let arrayBrackets = [];
+  let count = 0;
 
-//[['(',')']]
-   while (bracketsConfig[count1]) {
-     newString = bracketsConfig[count1].join("");
-     str += newString;
-     count1++;
-   }
-
-//test brackets
-   while (str[count] !== undefined) {
-    
-     if ((str[count] === '(') ||
-      (str[count] === '[') ||
-      (str[count] === '|') ||
-      (str[count] === '{')) 
-     {
-       arrayBrackets.push(str[count]);
-       if (str[count] === '|') {
-        arrayBrackets.pop();
-      }
-     } else {
-
-       if (arrayBrackets.length === 0) {
-         return false;
-       } else {
-         lastElement = arrayBrackets.pop();
-      
-         if ((lastElement === '(' && str[count] !== ')') ||
-             (lastElement === '[' && str[count] !== ']') ||
-             (lastElement === '{' && str[count] !== '}'))
-             {
-           return false;
-         }
-         }
-       }
-       count++;
-     }
-   if(arrayBrackets.length === 0) {
-     return true;
-} else {return false};
+  while(str[count]) {
+    bracketsConfig.forEach((element) => {
+        let lastElement = arrayBrackets[arrayBrackets.length - 1];
+        if (str[count] === element[0]) {
+            if (element[0] === element[1] && lastElement === str[count]) {
+                arrayBrackets.pop(lastElement);
+            } else arrayBrackets.push(str[count]);
+        } else if (lastElement === element[0] && str[count] === element[1]) {
+            arrayBrackets.pop(lastElement);
+        }
+    });
+    count++;
 }
+    return arrayBrackets.length === 0 ? true : false;
+  }
